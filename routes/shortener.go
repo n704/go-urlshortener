@@ -1,8 +1,7 @@
 package routes
 
 import (
-	"urlshortener/view"
-
+  "github.com/n704/go-urlshortener/view"
 	"github.com/gorilla/mux"
 )
 

@@ -7,9 +7,6 @@ import (
 // ShortLink is datatype
 type ShortLink struct {
 	gorm.Model
-	URL     string `json:"url"`
-	Shorten string `json:"shorten" gorm:"primary_key"`
+	URL     string `json:"url" valid:"url"`
+	Shorten string `json:"shorten" gorm:"primary_key" valid:"optional"`
 }
-
-//ShortLinks list of ShortLink
-type ShortLinks []ShortLink

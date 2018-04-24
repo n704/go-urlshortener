@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"math/rand"
 	"net/http"
-	"net/url"
+  "log"
 	"time"
-	"urlshortener/model"
-
+"github.com/n704/go-urlshortener/model"
+ valid "github.com/asaskevich/govalidator"
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 )
@@ -53,10 +53,12 @@ func AddURL(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 	defer r.Body.Close()
-	_, err = url.ParseRequestURI(newLink.URL)
-	if err != nil {
-		json.NewEncoder(w).Encode("{\"data\": \"invalid url\"}")
-	}
+	_, err = valid.ValidateStruct(&newLink)
+  if err != nil {
+    log.Printf(err.Error())
+    json.NewEncoder(w).Encode("{\"data\":\""+err.Error()+"\"}")
+    return
+}
 	if newLink.Shorten == "" {
 		newLink.Shorten = codeGenerator(8)
 	}
