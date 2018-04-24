@@ -1,10 +1,10 @@
-package lib_test
+package view_test
 
 import (
 	"fmt"
 	"github.com/gorilla/mux"
-	"github.com/n704/go-urlshortener/lib/model"
-	"github.com/n704/go-urlshortener/lib/view"
+	"github.com/n704/go-urlshortener/model"
+	"github.com/n704/go-urlshortener/view"
 
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	. "github.com/onsi/ginkgo"
@@ -13,7 +13,7 @@ import (
 	"net/http/httptest"
 )
 
-var _ = Describe("Urls", func() {
+var _ = Describe("Shortener", func() {
 	var r *mux.Router
 	model.InitialMigration()
 	BeforeEach(func() {

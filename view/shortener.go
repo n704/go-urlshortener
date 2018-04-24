@@ -7,7 +7,7 @@ import (
 	"net/http"
   "log"
 	"time"
-"github.com/n704/go-urlshortener/lib/model"
+"github.com/n704/go-urlshortener/model"
  valid "github.com/asaskevich/govalidator"
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
