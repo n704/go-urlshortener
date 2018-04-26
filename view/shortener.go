@@ -3,9 +3,7 @@ package view
 import (
 	"encoding/json"
 	"fmt"
-	"math/rand"
 	"net/http"
-	"time"
 
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
@@ -29,19 +27,6 @@ func ListURL(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(shortLink)
 }
 
-func codeGenerator(size int) string {
-	var letters = [...]string{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
-		"N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "0", "1", "2", "3", "4",
-		"5", "6", "7", "8", "9"}
-	var shorten string
-	shorten = ""
-	rand.Seed(time.Now().UnixNano())
-	for i := 0; i <= size; i++ {
-		shorten += letters[rand.Intn(len(letters))]
-	}
-	return shorten
-}
-
 //AddURL adds new url to the lists
 func AddURL(w http.ResponseWriter, r *http.Request) {
 	// newLink := model.ShortLink{URL: "asd", Shorten: codeGenerator(8)}
@@ -58,9 +43,6 @@ func AddURL(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(400)
 		json.NewEncoder(w).Encode("{\"data\":\"" + err.Error() + "\"}")
 		return
-	}
-	if newLink.Shorten == "" {
-		newLink.Shorten = codeGenerator(8)
 	}
 	db, err := gorm.Open("sqlite3", "test.db")
 	if err != nil {
