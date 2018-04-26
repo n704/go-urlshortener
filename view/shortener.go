@@ -5,12 +5,11 @@ import (
 	"fmt"
 	"math/rand"
 	"net/http"
-  "log"
 	"time"
-"github.com/n704/go-urlshortener/model"
- valid "github.com/asaskevich/govalidator"
+
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
+	"github.com/n704/go-urlshortener/model"
 )
 
 //ListURL lising url
@@ -53,12 +52,13 @@ func AddURL(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 	defer r.Body.Close()
-	_, err = valid.ValidateStruct(&newLink)
-  if err != nil {
-    log.Printf(err.Error())
-    json.NewEncoder(w).Encode("{\"data\":\""+err.Error()+"\"}")
-    return
-}
+	linkPointer := &newLink
+	err = linkPointer.Validate()
+	if err != nil {
+		w.WriteHeader(400)
+		json.NewEncoder(w).Encode("{\"data\":\"" + err.Error() + "\"}")
+		return
+	}
 	if newLink.Shorten == "" {
 		newLink.Shorten = codeGenerator(8)
 	}
@@ -69,6 +69,7 @@ func AddURL(w http.ResponseWriter, r *http.Request) {
 	}
 	defer db.Close()
 	db.Create(&newLink)
+	w.WriteHeader(201)
 	json.NewEncoder(w).Encode(newLink)
 }
 
@@ -100,6 +101,7 @@ func RedirectURL(w http.ResponseWriter, r *http.Request) {
 	db.Where("shorten = ?", vars["shorten"]).First(&link)
 	url := link.URL
 	if url != "" {
+		// w.WriteHeader(302)
 		http.Redirect(w, r, url, 301)
 	} else {
 		json.NewEncoder(w).Encode("{\"data\":\"invalid shorten code\"}")
