@@ -46,7 +46,7 @@ var _ = Describe("Shortener", func() {
 				server := httptest.NewServer(r)
 				defer server.Close()
 				url := fmt.Sprintf("%s/shorteners/addurl", server.URL)
-				userData := `{"url": "http://www.facebook.com"}`
+				userData := `{"url": "facebook.com"}`
 				r, err := http.NewRequest("POST", url, strings.NewReader(userData))
 				res, err := http.DefaultClient.Do(r)
 				if err != nil {

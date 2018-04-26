@@ -1,8 +1,6 @@
 package model
 
 import (
-	"net/url"
-
 	valid "github.com/asaskevich/govalidator"
 	"github.com/jinzhu/gorm"
 )
@@ -14,16 +12,11 @@ type ShortLink struct {
 	Shorten string `json:"shorten" gorm:"primary_key" valid:"optional"`
 }
 
+// Validate validate the ShortLink model and return error
 func (shortLink *ShortLink) Validate() error {
 	_, err := valid.ValidateStruct(shortLink)
 	if err != nil {
 		return err
 	}
-	urlString := shortLink.URL
-	u, err := url.ParseRequestURI(urlString)
-	if err != nil {
-		return err
-	}
-	shortLink.URL = u.String()
 	return nil
 }
